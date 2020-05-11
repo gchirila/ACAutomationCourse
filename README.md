@@ -204,50 +204,49 @@ ONE OF THE COMMON MISTAKE IS TO DECLARE THE IWebDriver INSTANCE VARIABLE WITHIN 
 Our code starts to look cleaner :)
 
 Lets add more login tests to the suite by doing a barbaric copy paste of one of our test methods and do the updates:
-	- Should_Not_Login_With_Incorrect_Email
+
+```csharp
+		//Should_Not_Login_With_Incorrect_Email
+		[TestMethod]
+		public void Should_Not_Login_With_Incorrect_Email()
+		{
+		    driver.FindElement(By.Id("session_email")).SendKeys("wrong@wrong.wrong");
+		    driver.FindElement(By.Id("session_password")).SendKeys("asd");
+		    driver.FindElement(By.Name("commit")).Click();
+		
+		    var expectedResult = "Bad email or password.";
+		    var actualResults = driver.FindElement(By.XPath("//div[starts-with(@class, 'alert')]")).Text;
+		
+		    Assert.AreEqual(expectedResult, actualResults);
+		} 	
 	
-				[TestMethod]
-                public void Should_Not_Login_With_Incorrect_Email()
-				{
-                    driver.FindElement(By.Id("session_email")).SendKeys("wrong@wrong.wrong");
-                    driver.FindElement(By.Id("session_password")).SendKeys("asd");
-                    driver.FindElement(By.Name("commit")).Click();
-
-                    var expectedResult = "Bad email or password.";
-                    var actualResults = driver.FindElement(By.XPath("//div[starts-with(@class, 'alert')]")).Text;
-
-                    Assert.AreEqual(expectedResult, actualResults);
-                } 	
+		//Should_Not_Login_With_Incorrect_Password
+		[TestMethod]
+		public void Should_Not_Login_With_Incorrect_Password()
+		{
+		    driver.FindElement(By.Id("session_email")).SendKeys("asd@asd.asd");
+		    driver.FindElement(By.Id("session_password")).SendKeys("worng");
+		    driver.FindElement(By.Name("commit")).Click();
+		
+		    var expectedResult = "Bad email or password.";
+		    var actualResults = driver.FindElement(By.XPath("//div[starts-with(@class, 'alert')]")).Text;
+		
+		    Assert.AreEqual(expectedResult, actualResults);
+		} 	
 	
-	- Should_Not_Login_With_Incorrect_Password
-	
-				[TestMethod]
-                public void Should_Not_Login_With_Incorrect_Password()
-				{
-                    driver.FindElement(By.Id("session_email")).SendKeys("asd@asd.asd");
-                    driver.FindElement(By.Id("session_password")).SendKeys("worng");
-                    driver.FindElement(By.Name("commit")).Click();
-
-                    var expectedResult = "Bad email or password.";
-                    var actualResults = driver.FindElement(By.XPath("//div[starts-with(@class, 'alert')]")).Text;
-
-                    Assert.AreEqual(expectedResult, actualResults);
-                } 	
-	
-	- Should_Not_Login_With_No_Password
-	
-				[TestMethod]
-                public void Should_Not_Login_With_No_Password()
-				{
-                    driver.FindElement(By.Id("session_email")).SendKeys("wrong@wrong.wrong");
-                    driver.FindElement(By.Name("commit")).Click();
-
-                    var expectedResult = "Bad email or password.";
-                    var actualResults = driver.FindElement(By.XPath("//div[starts-with(@class, 'alert')]")).Text;
-
-                    Assert.AreEqual(expectedResult, actualResults);
-                } 	
-
+		//Should_Not_Login_With_No_Password
+		[TestMethod]
+		public void Should_Not_Login_With_No_Password()
+		{
+		    driver.FindElement(By.Id("session_email")).SendKeys("wrong@wrong.wrong");
+		    driver.FindElement(By.Name("commit")).Click();
+		
+		    var expectedResult = "Bad email or password.";
+		    var actualResults = driver.FindElement(By.XPath("//div[starts-with(@class, 'alert')]")).Text;
+		
+		    Assert.AreEqual(expectedResult, actualResults);
+		} 	
+```
 
 But wait, there is more work to do. Let's say that the login page layout needs to be changed. Our test will fail after this changes.
 We have only two tests and will be easy to fix it. But imagine that we have 25 login tests. Is not so funny to update all the tests.
@@ -269,7 +268,7 @@ We need to add the objects that we use in our script in this class: email input,
 Our login page will look like this in the end:
 
 ```csharp
-      public class LoginPage
+    public class LoginPage
     {
         private IWebDriver driver;
 
