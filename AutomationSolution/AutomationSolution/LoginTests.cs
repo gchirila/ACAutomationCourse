@@ -20,8 +20,6 @@ namespace AutomationSolution
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("http://a.testaddressbook.com/");
             driver.FindElement(By.Id("sign-in")).Click();
-            //BAD BAD BAD PRACTICE
-            Thread.Sleep(1000);
             loginPage = new LoginPage(driver);
         }
 

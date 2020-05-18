@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
 
 namespace AutomationSolution.PageObjects
@@ -10,7 +11,7 @@ namespace AutomationSolution.PageObjects
         public HomePage(IWebDriver browser)
         {
             driver = browser;
-            PageFactory.InitElements(driver, this);
+            PageFactory.InitElements(this, new RetryingElementLocator(driver, TimeSpan.FromSeconds(20)));
         }
 
         [FindsBy(How = How.CssSelector, Using = "[data-test=addresses]")]

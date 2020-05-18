@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using AutomationSolution.PageObjects;
+using AutomationSolution.PageObjects.AddAddressPage;
+using AutomationSolution.PageObjects.AddAddressPage.InputData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -19,21 +21,23 @@ namespace AutomationSolution
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("http://a.testaddressbook.com/");
             driver.FindElement(By.Id("sign-in")).Click();
-            //BAD BAD BAD PRACTICE
-            Thread.Sleep(1000);
             var loginPage = new LoginPage(driver);
             loginPage.LoginApplication("asd@asd.asd", "asd");
             var homePage = new HomePage(driver);
             var addressesPage = homePage.NavigateToAddressesPage();
-            //BAD BAD BAD PRACTICE
-            Thread.Sleep(1000);
             addAddressPage = addressesPage.NavigateToAddAddressPage();
         }
 
         [TestMethod]
         public void Should_Add_Address_Successfully()
         {
-            addAddressPage.AddAddress("test george", "test george", "test george");
+            var addAddressBo = new AddAddressBO
+            {
+                FirstName = "Changed AC George",
+                ZipCode = "Changed Zip Code"
+            };
+            var addressDetailsPage = addAddressPage.AddAddress(addAddressBo);
+            Assert.AreEqual("Address was successfully created.", addressDetailsPage.SuccessfullyCreatedMessage);
         }
 
         [TestCleanup]

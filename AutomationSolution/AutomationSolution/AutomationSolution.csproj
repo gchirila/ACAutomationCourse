@@ -48,6 +48,9 @@
     <Reference Include="SeleniumExtras.PageObjects, Version=3.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetSeleniumExtras.PageObjects.3.11.0\lib\net45\SeleniumExtras.PageObjects.dll</HintPath>
     </Reference>
+    <Reference Include="SeleniumExtras.WaitHelpers, Version=3.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetSeleniumExtras.WaitHelpers.3.11.0\lib\net45\SeleniumExtras.WaitHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -61,7 +64,9 @@
   <ItemGroup>
     <Compile Include="AddAddressTest.cs" />
     <Compile Include="LoginTests.cs" />
-    <Compile Include="PageObjects\AddAddressPage.cs" />
+    <Compile Include="PageObjects\AddAddressPage\AddAddressPage.cs" />
+    <Compile Include="PageObjects\AddAddressPage\InputData\AddAddressBO.cs" />
+    <Compile Include="PageObjects\AddressDetailsPage\AddressDetailsPage.cs" />
     <Compile Include="PageObjects\AddressesPage.cs" />
     <Compile Include="PageObjects\HomePage.cs" />
     <Compile Include="PageObjects\LoginPage.cs" />

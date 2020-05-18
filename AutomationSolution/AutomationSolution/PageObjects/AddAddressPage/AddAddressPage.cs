@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
+using AutomationSolution.PageObjects.AddAddressPage.InputData;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 
-namespace AutomationSolution.PageObjects
+namespace AutomationSolution.PageObjects.AddAddressPage
 {
     public class AddAddressPage
     {
@@ -14,7 +14,7 @@ namespace AutomationSolution.PageObjects
         public AddAddressPage(IWebDriver browser)
         {
             driver = browser;
-            PageFactory.InitElements(driver, this);
+            PageFactory.InitElements(this, new RetryingElementLocator(driver, TimeSpan.FromSeconds(20)));
         }
 
         [FindsBy(How = How.Id, Using = "address_first_name")]
@@ -32,6 +32,9 @@ namespace AutomationSolution.PageObjects
         [FindsBy(How = How.Id, Using = "address_state")]
         private IWebElement DdlState { get; set; }
 
+        [FindsBy(How = How.Id, Using = "address_zip_code")]
+        private IWebElement TxtZipCode { get; set; }
+
         [FindsBy(How = How.CssSelector, Using = "input[type=radio]")]
         private IList<IWebElement> LstCountry { get; set; }
 
@@ -41,20 +44,22 @@ namespace AutomationSolution.PageObjects
         [FindsBy(How = How.Name, Using = "commit")]
         private IWebElement BtnCreateAddress { get; set; }
 
-        public void AddAddress(string firstName, string lastName, string address)
+        public AddressDetailsPage.AddressDetailsPage AddAddress(AddAddressBO addAddressBo)
         {
-            TxtFirstName.SendKeys(firstName);
-            TxtLastName.SendKeys(lastName);
-            TxtAddress1.SendKeys(address);
-            TxtCity.SendKeys("test george");
+            TxtFirstName.SendKeys(addAddressBo.FirstName);
+            TxtLastName.SendKeys(addAddressBo.LastName);
+            TxtAddress1.SendKeys(addAddressBo.Address1);
+            TxtCity.SendKeys(addAddressBo.City);
             var selectState = new SelectElement(DdlState);
-            selectState.SelectByText("Indiana");
-            LstCountry[1].Click();
+            selectState.SelectByText(addAddressBo.State);
+            TxtZipCode.SendKeys(addAddressBo.ZipCode);
+            LstCountry[addAddressBo.Country].Click();
 
             var js = (IJavaScriptExecutor) driver;
-            js.ExecuteScript("arguments[0].setAttribute('value', arguments[1])", BtnColor, "#FF0000");
+            js.ExecuteScript("arguments[0].setAttribute('value', arguments[1])", BtnColor, addAddressBo.Color);
 
-            //BtnCreateAddress.Click();
+            BtnCreateAddress.Click();
+            return new AddressDetailsPage.AddressDetailsPage(driver);
         }
 
 
