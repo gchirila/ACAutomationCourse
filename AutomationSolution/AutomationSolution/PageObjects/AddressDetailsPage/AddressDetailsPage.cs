@@ -1,6 +1,8 @@
 ﻿using System;
 using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
+using AutomationSolution.PageObjects.AddressesPage;
+    
 
 namespace AutomationSolution.PageObjects.AddressDetailsPage
 {
@@ -17,6 +19,15 @@ namespace AutomationSolution.PageObjects.AddressDetailsPage
         [FindsBy(How = How.CssSelector, Using = "[data-test=notice]")]
         private IWebElement LblSuccessfullyCreated { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = "[data-test=list]")]
+        private IWebElement BtnListAddresses { get; set; }
+
         public string SuccessfullyCreatedMessage => LblSuccessfullyCreated.Text;
+
+        public AddressesPage.AddressesPage NavigateToAddressesPage()
+        {
+            BtnListAddresses.Click();
+            return new AddressesPage.AddressesPage(driver);
+        }
     }
 }

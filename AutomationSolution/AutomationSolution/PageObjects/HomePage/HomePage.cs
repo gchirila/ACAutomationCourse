@@ -1,8 +1,9 @@
 ﻿using System;
+using AutomationSolution.Controls;
 using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
 
-namespace AutomationSolution.PageObjects
+namespace AutomationSolution.PageObjects.HomePage
 {
     public class HomePage
     {
@@ -14,14 +15,9 @@ namespace AutomationSolution.PageObjects
             PageFactory.InitElements(this, new RetryingElementLocator(driver, TimeSpan.FromSeconds(20)));
         }
 
-        [FindsBy(How = How.CssSelector, Using = "[data-test=addresses]")]
-        private IWebElement BtnAddresses { get; set; }
+        public LoggedInMenuItemControl menuItemControl => new LoggedInMenuItemControl(driver);
 
-        public AddressesPage NavigateToAddressesPage()
-        {
-            BtnAddresses.Click();
-            return new AddressesPage(driver);
-        }
+        
 
     }
 }

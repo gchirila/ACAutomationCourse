@@ -1,6 +1,7 @@
-﻿using System;
-using System.Threading;
-using AutomationSolution.PageObjects;
+﻿using AutomationSolution.Controls;
+using AutomationSolution.PageObjects.HomePage;
+using AutomationSolution.PageObjects.InputData;
+using AutomationSolution.PageObjects.LoginPage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -19,29 +20,33 @@ namespace AutomationSolution
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("http://a.testaddressbook.com/");
-            driver.FindElement(By.Id("sign-in")).Click();
+            var menuItemControl = new LoggedOutMenuItemControl(driver);
+            menuItemControl.NavigateToLoginPage();
             loginPage = new LoginPage(driver);
         }
 
         [TestMethod]
         public void Should_Login_Successfully()
         {
-            loginPage.LoginApplication("asd@asd.asd", "asd");
+            loginPage.LoginApplication(new LoginBO());
+            var homePage = new HomePage(driver);
 
-            Assert.IsTrue(driver.FindElement(By.CssSelector("span[data-test='current-user']"))
-                .Text.Equals("asd@asd.asd"));
+            Assert.IsTrue(homePage.menuItemControl.UserEmailMessage.Equals("asd@asd.asd"));
 
-            Assert.AreEqual("asd@asd.asd",
-                driver.FindElement(By.CssSelector("span[data-test='current-user']")).Text);
+            Assert.AreEqual("asd@asd.asd", homePage.menuItemControl.UserEmailMessage);
 
-            Assert.IsTrue(driver.FindElement(By.CssSelector("span[data-test='current-user']")).Displayed);
-            Assert.IsTrue(driver.FindElement(By.CssSelector("span[data-test='current-user']")).Displayed);
+            Assert.IsTrue(homePage.menuItemControl.UserEmailDislyed);
+            Assert.IsTrue(homePage.menuItemControl.UserEmailDislyed);
         }
 
         [TestMethod]
         public void Should_Not_Login_With_Incorrect_Email()
         {
-            loginPage.LoginApplication("incorrectEmail@asd.asd", "asd");
+            var loginBo = new LoginBO
+            {
+                UserEmail = "incorrectEmail@asd.asd"
+            };
+            loginPage.LoginApplication(loginBo);
 
             Assert.IsTrue(loginPage.FailLoginMessageText.Equals("Bad email or password."));
         }
@@ -49,7 +54,11 @@ namespace AutomationSolution
         [TestMethod]
         public void Should_Not_Login_With_Incorrect_Password()
         {
-            loginPage.LoginApplication("asd@asd.asd", "incorrectPassword");
+            var loginBo = new LoginBO
+            {
+                Password = "incorrectPassword"
+            };
+            loginPage.LoginApplication(loginBo);
 
             Assert.IsTrue(loginPage.FailLoginMessageText.Equals("Bad email or password."));
         }
@@ -57,7 +66,12 @@ namespace AutomationSolution
         [TestMethod]
         public void Should_Not_Login_With_Invalid_Credentials()
         {
-            loginPage.LoginApplication("incorrectEmail@asd.asd", "incorrectPassword");
+            var loginBo = new LoginBO
+            {
+                UserEmail = "incorrectEmail@asd.asd",
+                Password = "incorrectPassword"
+            };
+            loginPage.LoginApplication(loginBo);
 
             Assert.IsTrue(loginPage.FailLoginMessageText.Equals("Bad email or password."));
         }

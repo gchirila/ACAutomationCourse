@@ -1,10 +1,9 @@
 ﻿using System;
+using AutomationSolution.PageObjects.InputData;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
-using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
-namespace AutomationSolution.PageObjects
+namespace AutomationSolution.PageObjects.LoginPage
 {
     public class LoginPage
     {
@@ -25,15 +24,15 @@ namespace AutomationSolution.PageObjects
         [FindsBy(How = How.CssSelector, Using = "input[value='Sign in']")]
         private IWebElement BtnSignIn { get; set; }
         
-        private By failLoginMessage = By.CssSelector("div[data-test='notice']");
-        private IWebElement LblFailLoginMessage => driver.FindElement(failLoginMessage);
+        [FindsBy(How = How.CssSelector, Using = "div[data-test='notice']")]
+        private  IWebElement LblFailLoginMessage { get; set; }
 
         public string FailLoginMessageText => LblFailLoginMessage.Text;
 
-        public void LoginApplication(string email, string password)
+        public void LoginApplication(LoginBO loginBo)
         {
-            TxtEmail.SendKeys(email);
-            TxtPassword.SendKeys(password);
+            TxtEmail.SendKeys(loginBo.UserEmail);
+            TxtPassword.SendKeys(loginBo.Password);
             BtnSignIn.Click();
         }
 

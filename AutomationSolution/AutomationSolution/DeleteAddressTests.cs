@@ -1,8 +1,6 @@
-﻿using System.Threading;
-using AutomationSolution.Controls;
-using AutomationSolution.PageObjects;
-using AutomationSolution.PageObjects.AddAddressPage;
+﻿using AutomationSolution.Controls;
 using AutomationSolution.PageObjects.AddAddressPage.InputData;
+using AutomationSolution.PageObjects.AddressesPage;
 using AutomationSolution.PageObjects.HomePage;
 using AutomationSolution.PageObjects.InputData;
 using AutomationSolution.PageObjects.LoginPage;
@@ -13,13 +11,14 @@ using OpenQA.Selenium.Chrome;
 namespace AutomationSolution
 {
     [TestClass]
-    public class AddAddressTest
+    public class DeleteAddressTests
     {
         private IWebDriver driver;
-        private AddAddressPage addAddressPage;
+        private AddressesPage addressesPage;
+        private AddAddressBO addAddressBo = new AddAddressBO();
 
         [TestInitialize]
-        public void SetUp()
+        public void Setup()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
@@ -29,21 +28,19 @@ namespace AutomationSolution
             var loginPage = new LoginPage(driver);
             loginPage.LoginApplication(new LoginBO());
             var homePage = new HomePage(driver);
-            var addressesPage = homePage.menuItemControl.NavigateToAddressesPage();
-            addAddressPage = addressesPage.NavigateToAddAddressPage();
+            addressesPage = homePage.menuItemControl.NavigateToAddressesPage();
+            var addAddressPage = addressesPage.NavigateToAddAddressPage();
+            var addressDetailsPage = addAddressPage.AddAddress(addAddressBo);
+            addressesPage = addressDetailsPage.NavigateToAddressesPage();
         }
 
         [TestMethod]
-        public void Should_Add_Address_Successfully()
-        {
-            var addAddressBo = new AddAddressBO
-            {
-                FirstName = "Changed AC George",
-                ZipCode = "Changed Zip Code"
-            };
-            var addressDetailsPage = addAddressPage.AddAddress(addAddressBo);
-            Assert.AreEqual("Address was successfully created.", addressDetailsPage.SuccessfullyCreatedMessage);
+        public void Should_Delete_Address_Successfully()
+        { 
+            addressesPage.DeleteAddress(addAddressBo.FirstName);
+            Assert.IsTrue(addressesPage.SuccessfullyDestroyedMessage.Equals("Address was successfully destroyed."));
         }
+
 
         [TestCleanup]
         public void Cleanup()

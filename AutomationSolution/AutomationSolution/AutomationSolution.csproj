@@ -63,13 +63,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddAddressTest.cs" />
+    <Compile Include="Controls\MenuItemControl.cs" />
+    <Compile Include="DeleteAddressTests.cs" />
     <Compile Include="LoginTests.cs" />
     <Compile Include="PageObjects\AddAddressPage\AddAddressPage.cs" />
     <Compile Include="PageObjects\AddAddressPage\InputData\AddAddressBO.cs" />
     <Compile Include="PageObjects\AddressDetailsPage\AddressDetailsPage.cs" />
-    <Compile Include="PageObjects\AddressesPage.cs" />
-    <Compile Include="PageObjects\HomePage.cs" />
-    <Compile Include="PageObjects\LoginPage.cs" />
+    <Compile Include="PageObjects\AddressesPage\AddressesPage.cs" />
+    <Compile Include="PageObjects\HomePage\HomePage.cs" />
+    <Compile Include="PageObjects\LoginPage\InputData\LoginBO.cs" />
+    <Compile Include="PageObjects\LoginPage\LoginPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
