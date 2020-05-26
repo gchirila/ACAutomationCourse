@@ -671,7 +671,7 @@ To parametrize AddAddress method in an efficient way, we can create a business o
 Then, use it in the AddAddress method as a parameter and to access his properties:
 
 ```csharp
-         public AddressDetailsPage.AddressDetailsPage AddAddress(AddAddressBO addAddressBo)
+        public AddressDetailsPage.AddressDetailsPage AddAddress(AddAddressBO addAddressBo)
         {
             TxtFirstName.SendKeys(addAddressBo.FirstName);
             TxtLastName.SendKeys(addAddressBo.LastName);
@@ -780,14 +780,14 @@ Selenium Webdriver gives us the posibility to chain elements and create a struct
 
 We need to iterate the list to identify the address that we have added and to delete it. There are multiple ways to do it, but the preferred one is documented below: 
 ```csharp
-		 [FindsBy(How = How.CssSelector, Using = "tbody tr")]
+	[FindsBy(How = How.CssSelector, Using = "tbody tr")]
         private IList<IWebElement> LstAddresses { get; set; }
 
         private By delete = By.CssSelector("[data-method=delete]");
         private IWebElement BtnDestroy(string address) =>
             LstAddresses.FirstOrDefault(element => element.Text.Contains(address))?.FindElement(delete);
 														
-		public void DeleteAddress(string addressName)
+	public void DeleteAddress(string addressName)
         {
             BtnDestroy(addressName).Click();
             driver.SwitchTo().Alert().Accept();
@@ -814,7 +814,7 @@ Another way would be to create a method and iterate the list:
 And the methods could be called in test classes:
 ```csharp
 
-		[TestClass]
+    [TestClass]
     public class AddAddressTest
     {
         private IWebDriver driver;
@@ -863,22 +863,22 @@ The first step is to create a class named MenuItemControl. This class will conta
 
 ```csharp
 
-		public class MenuItemControl
-	    {
-	        public IWebDriver driver;
+	public class MenuItemControl
+	{
+	     public IWebDriver driver;
 			
-			public MenuItemControl(IWebDriver browser)
-	        {
-	            driver = browser;
-	        }
+	     public MenuItemControl(IWebDriver browser)
+	     {
+	         driver = browser;
+	     }
 			
-			[FindsBy(How = How.CssSelector, Using = "")]
+	    [FindsBy(How = How.CssSelector, Using = "")]
             private IWebElement BtnHome { get; set; }
 	    
-	        [FindsBy(How = How.Id, Using = "sign-in")]
+	    [FindsBy(How = How.Id, Using = "sign-in")]
             private IWebElement BtnSignIn { get; set; }
 	
-	        [FindsBy(How = How.CssSelector, Using = "[data-test=addresses]")]
+	    {FindsBy(How = How.CssSelector, Using = "[data-test=addresses]")]
             private IWebElement BtnAddresses { get; set; }
 
             [FindsBy(How = How.CssSelector, Using = "")]
@@ -886,7 +886,7 @@ The first step is to create a class named MenuItemControl. This class will conta
 
             [FindsBy(How = How.CssSelector, Using = "span[data-test='current-user']")]
             private IWebElement LblUserEmail { get; set; }
-		}
+	}
 		
 ```
 
@@ -900,7 +900,7 @@ And we need to move the elements to the according classes. We also need to move 
 
 ```csharp
 
-	public class MenuItemControl
+    public class MenuItemControl
     {
         public IWebDriver driver;
 
@@ -918,7 +918,7 @@ And we need to move the elements to the according classes. We also need to move 
 
 ```csharp
 
-	public class LoggedOutMenuItemControl: MenuItemControl
+    public class LoggedOutMenuItemControl: MenuItemControl
     {
         [FindsBy(How = How.Id, Using = "sign-in")]
         private IWebElement BtnSignIn { get; set; }
@@ -938,7 +938,7 @@ And we need to move the elements to the according classes. We also need to move 
 
 ```csharp
 
-	public class LoggedInMenuItemControl : MenuItemControl
+    public class LoggedInMenuItemControl : MenuItemControl
     {
         [FindsBy(How = How.CssSelector, Using = "[data-test=addresses]")]
         private IWebElement BtnAddresses { get; set; }
@@ -968,7 +968,7 @@ Let's used in the HomePage.cs, LoginTests.cs, AddAdreessTest.cs and DeleteAddres
 
 Home page
 ```csharp
-	public class HomePage
+    public class HomePage
     {
         private IWebDriver driver;
 
@@ -985,8 +985,7 @@ Home page
 Login tests
 ```csharp
 
-        //LoginTests
-		[TestInitialize]
+	[TestInitialize]
         public void SetUp()
         {
             driver = new ChromeDriver();
