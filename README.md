@@ -730,14 +730,14 @@ Example:
 
 In practice, we recommend that you use Web Driver Wait in combination with methods of the Expected Conditions class that reduce the wait. If the element appeared earlier than the time specified during Web Driver wait initialization, Selenium will not wait but will continue the test execution.
 
-Example 1:
+Example 1
 This can be called within the method
 ```csharp
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             wait.Until(ExpectedConditions.ElementToBeClickable(TxtFirstName));
 ```
 
-Example 2:
+Example 2
 Adding the wait in the constuctor. In this way, we can create 
 ```csharp
         public AddAdressPage(IWebDriver browser)
@@ -750,6 +750,17 @@ Adding the wait in the constuctor. In this way, we can create
 
         [FindsBy(How = How.Id, Using = "address_first_name")]
         private IWebElement TxtFirstName { get; set; }
+```
+Example 3
+We will use another option of retrying to locate the elements: RetryingElementLocator. 
+RetryElementLocator is a locator for elements for use with the PageFactory that retries locating the element up to a timeout if the element is not found.
+We will add it in the constructor of any page object that we have/will created.
+```csharp
+        public LoginPage(IWebDriver browser)
+        {
+            driver = browser;
+            PageFactory.InitElements(this, new RetryingElementLocator(driver, TimeSpan.FromSeconds(20)));
+        }
 ```
 
 ### **Session 6**
@@ -785,7 +796,7 @@ We need to iterate the list to identify the address that we have added and to de
 
 Another way would be to create a method and iterate the list:
 ```csharp
-        public void DeleteAddressV2(string address)
+        public void DeleteAddress(string address)
         {
             foreach (var address in LstAddresses)
             {
